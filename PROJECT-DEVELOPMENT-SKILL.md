@@ -107,8 +107,9 @@ Current:
 ห้ามเขียน architecture ที่ยังไม่ได้สร้างเป็นของปัจจุบัน
 
 Current:
-- ยังไม่มี application architecture
-- Repository มีเฉพาะ Development Skill เดิม ณ เวลาตรวจสอบก่อนสร้างไฟล์นี้
+- ยังไม่มี Shopee application architecture
+- Hermes Agent เป็น external CLI runtime ของโปรเจกต์ ไม่ได้ vendor หรือสร้าง agent framework ซ้อนใน repository
+- Repository ใช้ `AGENTS.md` เป็น workspace instruction และ `PROJECT-DEVELOPMENT-SKILL.md` เป็น development source of truth
 
 ---
 
@@ -117,8 +118,10 @@ Current:
 บันทึกโครงสร้างสำคัญของ repository ตามของจริง
 
 Current:
+- `AGENTS.md` — กฎระดับ repository บังคับให้อ่าน Development Skill ก่อนพัฒนา
 - `PROJECT-DEVELOPMENT-SKILL.md` — Development Skill หลักของ repository
-- `PROJECT_DEVELOPMENT_SKILL.md` — Development Skill รุ่นแรกที่มีอยู่ก่อนเปลี่ยนชื่อหลัก
+- `README.md` — ขั้นตอนติดตั้ง/ตรวจ Hermes CLI และ project smoke test ขั้นแรก
+- `PROJECT_DEVELOPMENT_SKILL.md` — Development Skill รุ่นแรกที่มีอยู่ก่อนเปลี่ยนชื่อหลัก; ไม่ใช่กฎหลัก
 
 เมื่อเพิ่ม/ลบ/ย้ายส่วนสำคัญ:
 อัปเดตส่วนนี้
@@ -139,7 +142,18 @@ Current:
 ห้ามสร้างรายการล่วงหน้าสำหรับ component ที่ยังไม่มี
 
 Current:
-- ยังไม่มี application component
+
+Component: Repository development instructions
+- หน้าที่: กำหนดให้ Agent อ่าน Development Skill และตรวจ repository ก่อนพัฒนา
+- ไฟล์: `AGENTS.md`
+- เชื่อมกับ: Hermes workspace context / development agents
+- สถานะ: สร้างและตรวจไฟล์แล้ว
+
+Component: Hermes CLI foundation documentation
+- หน้าที่: กำหนด minimum setup และ smoke test ก่อนเริ่ม Shopee logic
+- ไฟล์: `README.md`
+- เชื่อมกับ: external `hermes` CLI
+- สถานะ: สร้างและตรวจเนื้อหาใน repository แล้ว; ยังไม่ได้ยืนยัน runtime บนเครื่องผู้ใช้
 
 ---
 
@@ -153,16 +167,6 @@ Decision:
 Reason:
 Date/Stage:
 
-ตัวอย่างเรื่องที่ต้องบันทึก:
-
-- วิธีเชื่อม Shopee
-- API/provider
-- database
-- AI provider
-- media generation
-- Hermes integration
-- publishing mechanism
-
 ห้ามเปลี่ยน Decision เดิมโดยไม่ตรวจเหตุผลเดิมก่อน
 
 Current Decisions:
@@ -175,6 +179,14 @@ Decision: Hermes Agent เป็น Agent หลัก และเริ่ม�
 Reason: เป็น requirement ที่ผู้ใช้ยืนยัน
 Date/Stage: Project initialization
 
+Decision: ใช้ Hermes CLI โดยตรงเป็น foundation แทนการสร้าง custom agent wrapper/framework ในขั้นแรก
+Reason: Hermes มี CLI, setup/model/tool configuration, one-shot chat และ workspace instruction support อยู่แล้ว; ตรงกับกฎให้ตรวจ capability ที่มีอยู่ก่อนสร้างระบบเพิ่ม
+Date/Stage: Hermes CLI foundation
+
+Decision: ใช้ one-shot `hermes chat --oneshot -q` เป็น smoke test ขั้นแรกของ repository
+Reason: เป็นวิธีเล็กที่สุดในการยืนยันว่า Hermes รันได้และอ่าน context ของ repository ได้ก่อนสร้าง Shopee-specific code
+Date/Stage: Hermes CLI foundation
+
 ---
 
 ## 11. Completed
@@ -183,7 +195,7 @@ Date/Stage: Project initialization
 
 - สร้างแล้ว
 - ตรวจแล้ว
-- ทำงานได้จริง
+- ทำงานได้จริงในขอบเขตที่ระบุ
 
 ห้ามบันทึกงานที่ยังไม่ได้ทดสอบว่า Completed
 
@@ -191,6 +203,8 @@ Current:
 - ตรวจ repository ก่อนงานครั้งนี้แล้ว
 - ยืนยันว่า repository เข้าถึงและเขียนได้
 - สร้าง Development Skill หลัก `PROJECT-DEVELOPMENT-SKILL.md`
+- ตรวจ official Hermes Agent documentation สำหรับ installation, setup, CLI และ one-shot chat capability
+- สร้าง `README.md` สำหรับ minimum Hermes CLI foundation และตรวจว่าไฟล์ถูกบันทึกใน repository แล้ว
 
 ---
 
@@ -206,7 +220,9 @@ Current:
 เมื่อแก้สำเร็จให้อัปเดตสถานะ
 
 Current:
-- ยังไม่มี application code ให้ทดสอบ
+- ยังไม่มี Shopee application code
+- ยังไม่สามารถยืนยันได้จาก GitHub repository ว่าเครื่อง development ของผู้ใช้ติดตั้ง/configure Hermes CLI แล้ว
+- project smoke test ต้องรันใน environment ที่มี Hermes CLI และ model/provider credentials จริง
 - มีไฟล์ Development Skill รุ่นแรก `PROJECT_DEVELOPMENT_SKILL.md` อยู่ร่วมกับไฟล์หลักใหม่; ห้ามถือไฟล์เดิมเป็นกฎหลัก
 
 ---
@@ -217,7 +233,7 @@ Current:
 
 Current Next Step:
 
-กำหนดและตรวจวิธีใช้งาน Hermes Agent ผ่าน CLI ที่จำเป็นสำหรับ foundation ขั้นแรก โดยตรวจความสามารถจริงของ Hermes ก่อนสร้าง application code
+รันและยืนยัน Hermes CLI project smoke test ใน development environment จริงจาก root ของ repository ให้ผ่านก่อนสร้าง Shopee-specific application code
 
 ห้ามกระโดดไปสร้างระบบขั้นถัดไป
 ถ้า Main Next Step ปัจจุบันยังไม่ผ่าน
